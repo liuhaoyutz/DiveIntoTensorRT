@@ -54,7 +54,7 @@ class MnistModel(object):
         self.sgd_momentum = 0.9
         self.log_interval = 100
         # Fetch MNIST data set.
-        self.train_loader = torch.utils.data.DataLoader(
+        self.train_loader = torch.utils.data.DataLoader(  # 创建train dataloader
             datasets.MNIST(
                 "/tmp/mnist/data",
                 train=True,
@@ -68,7 +68,7 @@ class MnistModel(object):
             num_workers=1,
             timeout=600,
         )
-        self.test_loader = torch.utils.data.DataLoader(
+        self.test_loader = torch.utils.data.DataLoader(  # 创建test dataloader
             datasets.MNIST(
                 "/tmp/mnist/data",
                 train=False,
@@ -81,7 +81,7 @@ class MnistModel(object):
             num_workers=1,
             timeout=600,
         )
-        self.network = Net()
+        self.network = Net()  # 创建模型
         if torch.cuda.is_available():
             self.network = self.network.to("cuda")
 
@@ -89,8 +89,8 @@ class MnistModel(object):
     def learn(self, num_epochs=2):
         # Train the network for a single epoch
         def train(epoch):
-            self.network.train()
-            optimizer = optim.SGD(
+            self.network.train()  # 设置模型为train模式
+            optimizer = optim.SGD(  # 定义优化器
                 self.network.parameters(),
                 lr=self.learning_rate,
                 momentum=self.sgd_momentum,
@@ -101,10 +101,10 @@ class MnistModel(object):
                     target = target.to("cuda")
                 data, target = Variable(data), Variable(target)
                 optimizer.zero_grad()
-                output = self.network(data)
-                loss = F.nll_loss(output, target)
-                loss.backward()
-                optimizer.step()
+                output = self.network(data)  # 前向传播
+                loss = F.nll_loss(output, target)  # 计算损失
+                loss.backward()  # 梯度反向传播
+                optimizer.step()  # 更新参数
                 if batch % self.log_interval == 0:
                     print(
                         "Train Epoch: {} [{}/{} ({:.0f}%)]\tLoss: {:.6f}".format(
@@ -127,10 +127,10 @@ class MnistModel(object):
                         data = data.to("cuda")
                         target = target.to("cuda")
                     data, target = Variable(data), Variable(target)
-                output = self.network(data)
-                test_loss += F.nll_loss(output, target).data.item()
-                pred = output.data.max(1)[1]
-                correct += pred.eq(target.data).cpu().sum()
+                output = self.network(data)  # 前向传播
+                test_loss += F.nll_loss(output, target).data.item()  # 总损失
+                pred = output.data.max(1)[1]  # 预测值
+                correct += pred.eq(target.data).cpu().sum()  # 预测正确个数
             test_loss /= len(self.test_loader)
             print(
                 "\nTest set: Average loss: {:.4f}, Accuracy: {}/{} ({:.0f}%)\n".format(
@@ -142,8 +142,8 @@ class MnistModel(object):
             )
 
         for e in range(num_epochs):
-            train(e + 1)
-            test(e + 1)
+            train(e + 1)  # 先做训练
+            test(e + 1)  # 再验证
 
     def get_weights(self):
         return self.network.state_dict()

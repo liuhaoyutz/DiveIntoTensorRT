@@ -38,5 +38,10 @@ make
 cd ../../bin  
 ./sample_onnx_mnist  
 
+步骤五：Python接口示例程序  
+cd DiveIntoTensorRT/TensorRT_samples/python/network_api_pytorch_mnist  
+pip install -r requirements.txt  
+python sample.py  
+  
 ## Reference  
 https://github.com/NVIDIA/TensorRT  
