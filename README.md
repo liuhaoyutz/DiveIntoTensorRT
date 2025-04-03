@@ -22,7 +22,7 @@ git submodule update --init --recursive
 
 注意编译前必须设置环境变量 TRT_LIBPATH，指向TensorRT-10.7.0.23/lib目录。  
 
-# 指从github下载的TensorRT源码的目录, OSS是Open Source Software的缩写  
+#指从github下载的TensorRT源码的目录, OSS是Open Source Software的缩写  
 cd $TRT_OSSPATH  
 mkdir -p build && cd build  
 cmake .. -DTRT_LIB_DIR=$TRT_LIBPATH -DTRT_OUT_DIR=`pwd`/out  
